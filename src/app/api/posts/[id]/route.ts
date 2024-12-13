@@ -220,11 +220,8 @@ export async function PUT(req: NextRequest, { params }: { params: Params }) {
  *         description: Internal server error
  */
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;
+export async function DELETE(req: NextRequest, { params }: { params: Params }) {
+  const { id } = await params;
 
   if (!id) {
     return NextResponse.json({ error: "ID is required" }, { status: 400 });
