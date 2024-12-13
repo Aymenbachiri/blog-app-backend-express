@@ -121,13 +121,13 @@ export async function POST(req: NextRequest) {
     const parsedBody = postSchema.safeParse(body);
 
     if (!parsedBody.success) {
-      return new NextResponse(
-        JSON.stringify({
+      return NextResponse.json(
+        {
           errors: parsedBody.error.issues.map((issue) => ({
             field: issue.path[0],
             message: issue.message,
           })),
-        }),
+        },
         { status: 400 }
       );
     }
@@ -149,14 +149,15 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     if (error instanceof z.ZodError) {
       console.error("Input validation error:", error.issues);
-      return new NextResponse(
-        JSON.stringify({ error: error.issues[0].message }),
+      return NextResponse.json(
+        { error: error.issues[0].message },
         { status: 400 }
       );
     } else {
       console.error("Error during Post creation:", error);
-      return (
-        NextResponse.json({ error: "Failed to create Post" }), { status: 500 }
+      return NextResponse.json(
+        { error: "Failed to create Post" },
+        { status: 500 }
       );
     }
   }
